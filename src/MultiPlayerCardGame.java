@@ -96,6 +96,72 @@ public class MultiPlayerCardGame {
 
 
 
+    private static void dealInitialCards(List<Card> deck, List<Player> players) {
+        for (Player player : players) {
+            player.drawCard(deck, INITIAL_HAND_SIZE);
+        }
+    }
+
+    private static Card drawTopCard(List<Card> deck, List<Card> discardPile) {
+        Card topCard = deck.remove(deck.size() - 1);
+        discardPile.add(topCard);
+        return topCard;
+    }
+
+    private static void displayPlayerHand(Player player) {
+        System.out.println("Your hand:");
+        List<Card> hand = player.getHand();
+        for (int i = 0; i < hand.size(); i++) {
+            System.out.println((i + 1) + ": " + hand.get(i));
+        }
+    }
+
+    private static int getCardIndexToPlay(Scanner scanner, int handSize) {
+        int cardIndex;
+        do {
+            System.out.print("Enter the index of the card to play (1-" + handSize + "): ");
+            cardIndex = scanner.nextInt();
+        } while (cardIndex < 1 || cardIndex > handSize);
+
+        return cardIndex - 1;
+    }
+
+    private static boolean isActionCard(Card card) {
+        String rank = card.getRank();
+        return rank.equals("Ace") || rank.equals("King") || rank.equals("Queen") || rank.equals("Jack");
+    }
+
+    private static void handleActionCard(Card actionCard, List<Player> players, int currentPlayerIndex) {
+        String rank = actionCard.getRank();
+
+        if (rank.equals("Ace")) {
+            int nextPlayerIndex = (currentPlayerIndex + 1) % players.size();
+            System.out.println("Skipping " + players.get(nextPlayerIndex).getName() + "'s turn");
+            currentPlayerIndex = nextPlayerIndex;
+        } else if (rank.equals("King")) {
+            Collections.reverse(players);
+            System.out.println("Reversing the order of play");
+        } else if (rank.equals("Queen")) {
+            int nextPlayerIndex = (currentPlayerIndex + 1) % players.size();
+            players.get(nextPlayerIndex).drawCard(Collections.emptyList(), 2);
+            System.out.println(players.get(nextPlayerIndex).getName() + " draws 2 cards");
+        } else if (rank.equals("Jack")) {
+            int nextPlayerIndex = (currentPlayerIndex + 1) % players.size();
+            players.get(nextPlayerIndex).drawCard(Collections.emptyList(), 4);
+            System.out.println(players.get(nextPlayerIndex).getName() + " draws 4 cards");
+        }
+    }
+
+    private static int getNextPlayerIndex(int currentPlayerIndex, int numPlayers, Card cardToPlay) {
+        int nextPlayerIndex = (currentPlayerIndex + 1) % numPlayers;
+
+        if (cardToPlay.getRank().equals("8")) {
+            return nextPlayerIndex;  // Skip one player if an 8 card is played
+        }
+
+        return nextPlayerIndex;
+    }
+
 
 
 }
