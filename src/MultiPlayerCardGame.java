@@ -61,5 +61,41 @@ public class MultiPlayerCardGame {
         scanner.close();
     }
 
+    private static List<Card> createDeck() {
+        List<Card> deck = new ArrayList<>();
+
+        String[] suits = {"Spades", "Hearts", "Diamonds", "Clubs"};
+        String[] ranks = {"Ace", "2", "3", "4", "5", "6", "7", "8", "9", "10", "Jack", "Queen", "King"};
+
+        for (String suit : suits) {
+            for (String rank : ranks) {
+                Card card = new Card(rank, suit);
+                deck.add(card);
+            }
+        }
+
+        Collections.shuffle(deck);
+        return deck;
+    }
+
+    private static List<Player> createPlayers(Scanner scanner) {
+        System.out.print("Enter the number of players (2-4): ");
+        int numPlayers = scanner.nextInt();
+        scanner.nextLine();
+
+        List<Player> players = new ArrayList<>();
+
+        for (int i = 1; i <= numPlayers; i++) {
+            System.out.print("Enter the name for Player " + i + ": ");
+            String playerName = scanner.nextLine();
+            players.add(new Player(playerName));
+        }
+
+        return players;
+    }
+
+
+
+
 
 }
