@@ -38,4 +38,28 @@ public class MultiPlayerCardGame {
                     continue;
                 }
             }
+
+            displayPlayerHand(currentPlayer);
+
+            int cardIndex = getCardIndexToPlay(scanner, currentPlayer.getHand().size());
+            Card cardToPlay = currentPlayer.getHand().get(cardIndex);
+            if (isActionCard(cardToPlay)) {
+                handleActionCard(cardToPlay, players, currentPlayerIndex);
+            }
+
+            currentPlayer.playCard(cardToPlay, discardPile);
+            topCard = cardToPlay;
+
+            if (currentPlayer.getHand().isEmpty()) {
+                gameEnd = true;
+                System.out.println("\n" + currentPlayer.getName() + " wins!");
+            } else {
+                currentPlayerIndex = getNextPlayerIndex(currentPlayerIndex, players.size(), cardToPlay);
+            }
+        }
+
+        scanner.close();
+    }
+
+
 }
