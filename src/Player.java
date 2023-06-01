@@ -2,6 +2,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
+import java.util.ArrayList;
 
 public class Player {
 
@@ -20,5 +21,20 @@ public class Player {
     public List<Card> getHand() {
         return hand;
     }
+
+    public void drawCard(List<Card> drawPile, int count) {
+        Random random = new Random();
+        for (int i = 0; i < count; i++) {
+            if (drawPile.isEmpty())
+                break;
+
+            int index = random.nextInt(drawPile.size());
+            Card card = drawPile.remove(index);
+            hand.add(card);
+        }
+    }
+
+
+
 
 }
