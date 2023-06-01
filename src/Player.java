@@ -34,7 +34,17 @@ public class Player {
         }
     }
 
+    public void playCard(Card card, List<Card> discardPile) {
+        hand.remove(card);
+        discardPile.add(card);
+    }
 
-
+    public boolean hasPlayableCard(Card topCard) {
+        for (Card card : hand) {
+            if (card.getRank().equals(topCard.getRank()) || card.getSuit().equals(topCard.getSuit()))
+                return true;
+        }
+        return false;
+    }
 
 }
